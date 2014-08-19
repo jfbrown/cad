@@ -1,13 +1,15 @@
+$fn = 360;
+
 // radius of mount
-r_mount = 8;
+r_mount = 15.1;
 
 // radius of spool
-r_spool = 15;
+r_spool = 56/2;
 
 // thickness of adapter
-t_adapter = 4;
+t_adapter = 10;
 
-// how much lip to contain spool on adapter
+// how much lip to contain spool on adapter, added to adapter thickness
 dr_lip = 2;
 
 // x-y of notch

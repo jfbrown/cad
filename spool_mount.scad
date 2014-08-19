@@ -1,16 +1,18 @@
 // inner radius of bearing
-ri_bearing = 4;
+ri_bearing = 11-4;
 // outer radius of bearing
-ro_bearing = 6;
+ro_bearing = 11;
 // width of bearing
-w_bearing = 4;
+w_bearing = 7;
 
 // outer radius of adapter, should be updated to be something fixed
-r_adapter = ro_bearing+4;
+r_adapter = 15;
 // width/length of adapter, along its axis
-w_adapter = 50;
+w_adapter = 16;
 // heigh/width of the notch key
-w_notch = 2;
+w_notch = 2.05;
+
+$fn = 120;
 
 union() {
   difference() {
