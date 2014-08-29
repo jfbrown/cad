@@ -5,7 +5,7 @@ r_m3_clearance = 1.5;
 r_rod = 4;
 
 // mounting hole radius, 1.5mm for M3 screw
-r_clearance = r_m3_clearance;
+r_clearance = r_m3_clearance+0.1;
 // mounting hole countersink, 3mm for M3 screw
 r_countersink = 3;
 
@@ -16,7 +16,7 @@ w_mount = 10;
 t_mount = r_rod/2;
 
 // how thick to make end-cap. -1 for open
-t_cap = 2;
+t_cap = -2;
 
 // radius of set-screw pilot, currently set to M3.
 r_set_screw = r_m3_pilot;
@@ -50,9 +50,11 @@ difference() {
     screw_hole();
   }
 
-  // set screw hole
-  translate([0, 0, r_rod+t_mount/2]) {
-    cylinder(t_mount*2, r = r_set_screw, center = true);
+  // top cut-out
+  translate([0, 0, r_rod]) {
+    rotate([0, 45, 0]) {
+      cube([2*r_rod, 2*w_mount, 2*r_rod], center = true);
+    }
   }
 }
 
