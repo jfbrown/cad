@@ -1,59 +1,69 @@
+$fn = 60;
+
 n = 1.02;
 
 rod_dia = 16;
+bearing_od = 22;
+bearing_h = 7;
+
+clearance = 1;
+bearing_clearance = 1;
+
+// m3 shaft width
+slot_width = 3;
+// m3 head width
+slot_clearance = 5;
+
 wall_thickness = 4;
 
 ir = rod_dia/2*n;
-or = ir+4;
+or = ir+bearing_od;
+// bearing outer radius
+bearing_or = bearing_od/2+bearing_clearance;
 
-l = or*2;
+l = bearing_od;
+slot_length = 0.6*or;
 
-// difference() {
-//   translate([4, 4, -8]) cube([32, 32, 16]);
-//   #cylinder(h = 30, r1 = 8, r2 = 8, center = true);
-//   #translate([11+8, 3.5, 0]) rotate([90, 0, 0]) {
-//     cylinder(h = 7, r1 = 11, r2 = 11);
-//   }
-//   #translate([-3.5, 11+8, 0]) rotate([90, 0, 90]) {
-//     cylinder(h = 7, r1 = 11, r2 = 11);
-//   }
-//   #translate([11+8, 64-3.5, 0]) rotate([90, 0, 0]) {
-//     cylinder(h = 2*32, r1 = 3.5, r2 = 3.5);
-//   }
-//   #translate([-3.5, 11+8, 0]) rotate([90, 0, 90]) {
-//     cylinder(h = 2*32, r1 = 3.5, r2 = 3.5);
-//   }
-//   #translate([0, 0, -16]) cube([32, 32, 32]);
-// }
-
-// difference() {
-//   cube([32, 32, 40], center = true);
-//   #translate([0, 0, 8]) {
-//     rotate([90, 0, 0]) cylinder(h = 64, r1 = 8, r2 = 8, center = true);
-//   }
-//   #translate([0, 0, -8]) {
-//     rotate([0, 90, 0]) cylinder(h = 64, r1 = 8, r2 = 8, center = true);
-//   }
-//   #translate([16, 16, 0]) {
-//     rotate(45, 0, 0) tube(10, 20, 32);
-//   }
-// }
-
-difference() {
-  hull() {
+intersection() {
+  difference() {
     cylinder(l, r = or, center = true);
-    translate([ir+or, 0, 0]) rotate([90, 0, 0]) cylinder(l, r = or, center = true);
+    cylinder(2*l, r = ir, center = true);
 
-    // bolt flanges
-    translate([-or, 0, 0]) cube([ir, wall_thickness*2, l], center = true);
-    translate([ir*3+wall_thickness*2, 0, 0]) rotate([90, 0, 0]) cube([ir, wall_thickness*2, l], center = true);
+    // bearings
+    translate([bearing_or+ir-bearing_clearance, 0, 0]) {
+      rotate([90, 0, 0]) cylinder(bearing_h, r = bearing_or, center = true);
+    }
+    translate([0, bearing_or+ir-bearing_clearance, 0]) {
+      rotate([0, 90, 0]) cylinder(bearing_h, r = bearing_or, center = true);
+    }
+
+    // bolt slots
+    translate([(or-ir)/2+ir, or/2, 0]) {
+      rotate([90, 0, 0]) slot(slot_width, slot_length, or);
+    }
+    translate([or/2, (or-ir)/2+ir, 0]) {
+      rotate([90, 0, 90]) slot(slot_width, slot_length, or);
+    }
+
+    // bolt head cut-out
+    translate([ir+1, ir+1, -slot_clearance/2]) cube([or, or, slot_clearance]);
+
+    // efficiency cut-out top/bottom
+    translate([ir+1, ir+1, l/2-slot_clearance/2]) cube([or, or, slot_clearance]);
+    mirror([0, 0, 1]) {
+      translate([ir+1, ir+1, l/2-slot_clearance/2]) cube([or, or, slot_clearance]);
+    }
   }
-  // bored holes
-  cylinder(l*2, r = ir, center = true);
-  translate([ir+or, 0, 0]) rotate([90, 0, 0]) cylinder(l*2, r = ir, center = true);
 
-  // flange cuts
-  translate([-or, 0, 0]) cube([ir*2, 1, l*2], center = true);
-  translate([ir*3+wall_thickness*2, 0, 0]) rotate([90, 0, 0]) cube([ir*2, 1, l*2], center = true);
+  // capture only 1/4 of the cylinder
+  translate([clearance, clearance, -or]) cube([2*or, 2*or, 2*or]);
+}
 
+module slot(width, length, height) {
+  r = width/2;
+
+  hull() {
+    translate([length/2-r, 0, 0]) cylinder(height, r = r, center = true);
+    translate([-(length/2-r), 0, 0]) cylinder(height, r = r, center = true);
+  }
 }
