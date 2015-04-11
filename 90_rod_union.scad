@@ -1,10 +1,10 @@
 n = 1.02;
 
 rod_dia = 16;
-wall_thickness = 4;
+wall_thickness = 2;
 
 ir = rod_dia/2*n;
-or = ir+4;
+or = ir+wall_thickness;
 
 l = or*2;
 

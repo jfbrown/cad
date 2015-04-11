@@ -1,18 +1,19 @@
 $fn = 60;
 
-n = 1.02;
+n = 1.03;
 
 rod_dia = 16;
 bearing_od = 22;
 bearing_h = 7;
 
-clearance = 1;
+// space between quarters
+clearance = bearing_h/2;
 bearing_clearance = 1;
 
 // m3 shaft width
-slot_width = 3;
+slot_width = 3*n;
 // m3 head width
-slot_clearance = 5;
+slot_clearance = 6*n;
 
 wall_thickness = 4;
 
@@ -22,7 +23,7 @@ or = ir+bearing_od;
 bearing_or = bearing_od/2+bearing_clearance;
 
 l = bearing_od;
-slot_length = 0.6*or;
+slot_length = bearing_od/2;
 
 intersection() {
   difference() {
@@ -46,12 +47,12 @@ intersection() {
     }
 
     // bolt head cut-out
-    translate([ir+1, ir+1, -slot_clearance/2]) cube([or, or, slot_clearance]);
+    translate([ir+slot_width, ir+slot_width, -slot_clearance/2]) cube([or, or, slot_clearance]);
 
     // efficiency cut-out top/bottom
-    translate([ir+1, ir+1, l/2-slot_clearance/2]) cube([or, or, slot_clearance]);
+    translate([ir+slot_width, ir+slot_width, l/2-slot_clearance/2]) cube([or, or, slot_clearance]);
     mirror([0, 0, 1]) {
-      translate([ir+1, ir+1, l/2-slot_clearance/2]) cube([or, or, slot_clearance]);
+      translate([ir+slot_width, ir+slot_width, l/2-slot_clearance/2]) cube([or, or, slot_clearance]);
     }
   }
 
