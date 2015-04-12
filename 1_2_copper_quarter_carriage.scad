@@ -11,7 +11,7 @@ clearance = bearing_h/2;
 bearing_clearance = 1;
 
 // m3 shaft width
-slot_width = 3*n;
+slot_width = 4*n;
 // m3 head width
 slot_clearance = 6*n;
 
